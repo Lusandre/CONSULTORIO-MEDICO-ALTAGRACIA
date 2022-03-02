@@ -70,8 +70,8 @@ def ventana_inicio():
 	eva_entry = Entry(login_frame,relief="flat",width=46,bg="white",fg="black",font=("Arial",11,"bold")) 
 	eva_entry.place(x=13,y=255)
 
-	boton_registrar = PhotoImage(file="volver.PNG")
-	boton_cacelar =  PhotoImage(file="exportar.png")
+	boton_registrar = PhotoImage(file="imag/volver.PNG")
+	boton_cacelar =  PhotoImage(file="imag/exportar.png")
 
 	BTN_R = Button(login_frame,image=boton_registrar,bg="DeepSkyBlue4",border=0)
 	BTN_R.place(x=70,y=300)
