@@ -3,10 +3,12 @@ from tkinter import ttk
 import sqlite3
 from tkinter import messagebox as mb
 from datetime import datetime
+from client.db.db import Sqlite
 
 class Frame(tk.Frame):
 
 	db_name = 'database.db'
+	db_log = Sqlite()
 
 	def __init__(self, root = None):
 		super().__init__(root, width = 480, height =320)
@@ -59,20 +61,14 @@ class Frame(tk.Frame):
 		self.btn_inicio.place(x="40",y="285")
 
 	def login(self):				#Funcion login ... Nos permitira comprobar 'usuario' y 'contraseña' con la base de datos
-		print('hi')
 		usuario=self.usuario_entry.get()		#Obtenemos el valor de la 'caja1' (usuario)
 		contr=self.clave_entry.get()		#Obtenemos el valor de la 'caja2' (contraseña)
-		print('hi')
-		query = 'SELECT * FROM usuario WHERE username = ? AND llave = ?'
 		
-		db_rows = self.run_query(query,(usuario,contr))
-
-		if db_rows.fetchall():
+		if self.db_log.login((usuario, contr)):
 			mb.showinfo(title="Login Correcto",message="Usuario y contraseña correctos")		#Mostramos 'Login Correcto'
 			self.menu()
 		else:
 			mb.showerror(title="Login incorrecto",message="Usuario o contraseña incorrecto")	#Mostramos 'Login incorrecto'
-		#c.close()
 
 	def vacio(self):
 		self.textci.set('')

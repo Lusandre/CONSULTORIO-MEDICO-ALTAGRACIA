@@ -2,6 +2,7 @@ import tkinter as tk
 import os
 from client.gui_app import Frame
 
+
 def main():
 	root = tk.Tk()
 	root.title('CONSULTORIO MEDICO ALTAGRACIA')
