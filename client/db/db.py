@@ -55,3 +55,8 @@ class Sqlite:
 		self.parameters = {}
 		result = self.run_query()
 		return result
+
+	def actualizar(self, parameters):
+		self.query = "UPDATE usuario SET username = ?, llave = ? WHERE username = ?"
+		self.parameters = parameters
+		self.run_query()

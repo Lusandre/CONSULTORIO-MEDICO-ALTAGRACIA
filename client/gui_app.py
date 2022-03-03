@@ -59,7 +59,7 @@ class Frame(tk.Frame):
 
 		self.bonton_inicio = tk.PhotoImage(file="imag/Imagen1.png")
 		self.btn_inicio = tk.Button(self, command = self.login)
-		self.btn_inicio.config( image = self.bonton_inicio, bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
+		self.btn_inicio.config( image = self.bonton_inicio, bg = "DeepSkyBlue4",  cursor = 'hand2', border = 0)
 		self.btn_inicio.place(x="40",y="285")
 
 	def login(self):				#Funcion login ... Nos permitira comprobar 'usuario' y 'contraseña' con la base de datos
