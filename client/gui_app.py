@@ -9,6 +9,7 @@ class Frame(tk.Frame):
 
 	db_name = 'database.db'
 	db_log = Sqlite()
+	date = str(datetime.today().strftime('%Y-%m-%d'))
 
 	def __init__(self, root = None):
 		super().__init__(root, width = 480, height =320)
@@ -236,14 +237,9 @@ class Frame(tk.Frame):
 		for element in records:
 			self.tree.delete(element)
 		ci=self.ci_entry.get()
-		print(ci)
-        # getting data
-		#query = 'SELECT * FROM paciente ORDER BY ci DESC'
-		query = 'SELECT fecha, ci, nombre, apellido, telefono FROM diagnostico, paciente WHERE diagnostico.cipaciente=paciente.ci AND diagnostico.cipaciente= ?'
 		
-		db_rows = self.run_query(query,(ci,))
+		db_rows = self.db_log.buscar((ci,))
 		# filling data
-		print (db_rows)
 		for row in db_rows:
 			self.tree.insert('', 0, values = (row[0],row[1],row[2], row[3],row[4]))
 
@@ -356,16 +352,12 @@ class Frame(tk.Frame):
 	 # Get Products from Database
 
 	def bus(self):
-
 		ci=self.cedula_entry.get()
-		print(ci)
-        # getting data
-		#query = 'SELECT * FROM paciente ORDER BY ci DESC'
-		query = 'SELECT * FROM paciente WHERE ci= ?'
-		
-		db_rows = self.run_query(query,(ci,))
+        		
+		db_rows = self.db_log.rellenar((ci,))
 		# filling data
 		print (db_rows)
+		print ("nuevo")
 		for row in db_rows:
 			self.textnom.set(row[1])
 			self.textape.set(row[2])
@@ -375,39 +367,23 @@ class Frame(tk.Frame):
 
 	def registra(self):
 		ci = self.cedula_entry.get()
-
-		query = 'SELECT * FROM paciente WHERE ci = ?'
+		diagnostico = (self.cedula_entry.get(), self.date, self.ante_entry.get(), self.eva_entry.get())
+		paciente = (self.cedula_entry.get(), self.nombre_entry.get(), self.apellido_entry.get(), self.direccion_entry.get(), self.correo_entry.get(), self.telefono_entry.get(),"28")
 		
-		db = self.run_query(query,(ci,))
-		if not (db.fetchone()): 
-			self.reg_paciente()
+		if not (self.db_log.existe((ci,))): 
+			self.db_log.reg_paciente(paciente)
 
-		self.reg_diagnostico()
-
-
-	def reg_diagnostico(self):
-		query = 'INSERT INTO diagnostico VALUES (?,?,?,?)'
-		date = str(datetime.today().strftime('%Y-%m-%d'))	
-		print(date)
-		parameters = (self.cedula_entry.get(), date, self.ante_entry.get(), self.eva_entry.get())
-		self.run_query(query,parameters)
+		self.db_log.reg_diagnostico(diagnostico)
 		self.vacio()
 
-	def reg_paciente(self):
-		query = 'INSERT INTO paciente VALUES (?,?,?,?,?,?,?)'
-		parameters = (self.cedula_entry.get(), self.nombre_entry.get(), self.apellido_entry.get(), self.direccion_entry.get(), self.correo_entry.get(), self.telefono_entry.get(),"28")
-		self.run_query(query,parameters)
 
 	def get_products(self):
         # cleaning Table 
 		records = self.tree.get_children()
 		for element in records:
 			self.tree.delete(element)
-        # getting data
-		#query = 'SELECT * FROM paciente ORDER BY ci DESC'
-		query = 'SELECT fecha, ci, nombre, apellido, telefono FROM diagnostico, paciente WHERE diagnostico.cipaciente=paciente.ci ORDER BY fecha DESC'
-		
-		db_rows = self.run_query(query)
+        
+		db_rows = self.db_log.get_historias()
 		# filling data
 		print (db_rows)
 		for row in db_rows:
