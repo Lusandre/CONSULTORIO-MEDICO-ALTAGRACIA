@@ -4,6 +4,7 @@ import sqlite3
 from tkinter import messagebox as mb
 from datetime import datetime
 from client.db.db import Sqlite
+from client.modificar import Modificar
 
 class Frame(tk.Frame):
 
@@ -113,74 +114,17 @@ class Frame(tk.Frame):
 		self.bnt_consultar.place(x=195,y=185)
 
 		self.bonton_editar = tk.PhotoImage(file="imag/botonR3.png")
-		self.bnt_editar= tk.Button(self,command = self.modificar,image=self.bonton_editar,bg="white",border=0)
+		self.bnt_editar= tk.Button(self,command = self.editar,image=self.bonton_editar,bg="white",border=0)
 		self.bnt_editar.place(x=195,y=235)
 
 		self.bonton_salir = tk.PhotoImage(file="imag/botonR.png")
 		self.bnt_salir= tk.Button(self,image=self.bonton_salir,bg="white",border=0)
 		self.bnt_salir.place(x=225,y=305)
 
-	
-
-	def modificar (self):
-		global pantalla_modificar 
-		pantalla_modificar = tk.Toplevel(self)
-		pantalla_modificar.config(bg="DeepSkyBlue4",width = 600, height =380)
-		self.login_imagen = tk.PhotoImage(file= "imag/fond.png")
-		self.main = tk.Label(pantalla_modificar, image = self.login_imagen, bd=0)
-		self.main.pack()
+	def editar(self):
+		edit = Modificar(self)
 
 
-		self.login_info = tk.Label(pantalla_modificar, text="MODIFICAR USUARIO",fg="white",bg="DeepSkyBlue4",font=("Bodoni MT",20,"bold")) 
-		self.login_info.place(x=20,y=35)
-
-		self.usuario_info = tk.Label(pantalla_modificar, text="Usuario Antiguo",fg="white",bg="DeepSkyBlue4",font=("Arial",10,"bold")) 
-		self.usuario_info.place(x=20,y=105)
-		self.usuario_string = tk.StringVar()
-		self.usuario_entry = tk.Entry(pantalla_modificar, textvariable = self.usuario_string)
-		self.usuario_entry.focus() 
-		self.usuario_entry.config(relief="flat",width=20,bg="DeepSkyBlue4",fg="white",font=("Arial",11,"bold"))
-		self.usuario_entry.place(x=20,y=135)
-		self.usuario_line=tk.Frame(pantalla_modificar, height=2,width=200)
-		self.usuario_line.place(x=20,y=165)
-
-		self.clave_info = tk.Label(pantalla_modificar, text="Contraseña Antigua",bg="DeepSkyBlue4",fg="white",font=("Arial",10,"bold")) 
-		self.clave_info.place(x=20,y=175)
-		self.clave_string = tk.StringVar()
-		self.clave_entry = tk.Entry(pantalla_modificar, textvariable = self.clave_string) 
-		self.clave_entry.config( relief="flat",width=20,bg="DeepSkyBlue4",fg="white",show='*',font=("Arial",15,"bold"))
-		self.clave_entry.place(x=20,y=205)
-		self.clave_line=tk.Frame(pantalla_modificar, height=2,width=200)
-		self.clave_line.place(x=20,y=235)
-
-		self.new_usuario_info = tk.Label(pantalla_modificar, text="Usuario Nuevo",fg="white",bg="DeepSkyBlue4",font=("Arial",10,"bold")) 
-		self.new_usuario_info.place(x=330,y=105)
-		self.new_usuario_string = tk.StringVar()
-		self.new_usuario_entry = tk.Entry(pantalla_modificar, textvariable = self.new_usuario_string)
-		self.new_usuario_entry.focus() 
-		self.new_usuario_entry.config(relief="flat",width=20,bg="DeepSkyBlue4",fg="white",font=("Arial",11,"bold"))
-		self.new_usuario_entry.place(x=330,y=135)
-		self.new_usuario_line=tk.Frame(pantalla_modificar, height=2,width=200)
-		self.new_usuario_line.place(x=330,y=165)
-
-		self.new_clave_info = tk.Label(pantalla_modificar, text="Contraseña Nueva",bg="DeepSkyBlue4",fg="white",font=("Arial",10,"bold")) 
-		self.new_clave_info.place(x=330,y=175)
-		self.new_clave_string = tk.StringVar()
-		self.new_clave_entry = tk.Entry(pantalla_modificar, textvariable = self.new_clave_string) 
-		self.new_clave_entry.config( relief="flat",width=20,bg="DeepSkyBlue4",fg="white",show='*',font=("Arial",15,"bold"))
-		self.new_clave_entry.place(x=330,y=205)
-		self.new_clave_line=tk.Frame(pantalla_modificar, height=2,width=200)
-		self.new_clave_line.place(x=330,y=235)
-
-		self.guardar = tk.PhotoImage(file="imag/guardar.png")
-		self.btn_inicio = tk.Button(pantalla_modificar, command = self.menu)
-		self.btn_inicio.config( image = self.guardar, bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
-		self.btn_inicio.place(x="40",y="285")
-
-		self.bonton_inicio = tk.PhotoImage(file="imag/modificarr.png")
-		self.btn_inicio = tk.Button(pantalla_modificar, command = self.menu)
-		self.btn_inicio.config( image = self.bonton_inicio, bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
-		self.btn_inicio.place(x="350",y="285")
 
 	def tablad(self):
 		global tabla 
