@@ -28,6 +28,12 @@ class Sqlite:
 		result = self.run_query()
 		return result
 
+	def rellenar_diag(self, parameters):
+		self.query = 'SELECT * FROM diagnostico WHERE cipaciente= ? AND fecha=?'
+		self.parameters = parameters
+		result = self.run_query()
+		return result
+
 	def buscar(self, parameters):
 		self.query = 'SELECT fecha, ci, nombre, apellido, telefono FROM diagnostico, paciente WHERE diagnostico.cipaciente=paciente.ci AND diagnostico.cipaciente= ?'
 		self.parameters = parameters

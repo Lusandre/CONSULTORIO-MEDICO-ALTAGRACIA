@@ -5,6 +5,7 @@ from tkinter import messagebox as mb
 from datetime import datetime
 from client.db.db import Sqlite
 from client.modificar import Modificar
+from client.mostrar import Mostrar
 
 class Frame(tk.Frame):
 
@@ -15,10 +16,11 @@ class Frame(tk.Frame):
 	def __init__(self, root = None):
 		super().__init__(root, width = 480, height =320)
 		self.root = root
+		self.config(bg="DeepSkyBlue4")
 		self.pack()
 		
 		
-		self.inicio()
+		self.menu()
 		#self.tabla()
 
 	def run_query(self, query, parameters = {}):
@@ -165,7 +167,7 @@ class Frame(tk.Frame):
 		self.tree.insert('',0, values = ('12-01-22', '28349644', 'Lusandre', 'Marcano','04143958194'))
 
 		self.bonton_mostrar = tk.PhotoImage(file="imag/mostrar.png")
-		self.bnt_mostrar= tk.Button(tabla,image=self.bonton_mostrar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
+		self.bnt_mostrar= tk.Button(tabla,command = self.mostrar,image=self.bonton_mostrar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_mostrar.place(x=125,y=345)	
 
 		self.bonton_volver = tk.PhotoImage(file="imag/volver.png")
@@ -173,6 +175,11 @@ class Frame(tk.Frame):
 		self.bnt_volver.config(image=self.bonton_volver,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_volver.place(x=325,y=345)
 		self.get_products()
+
+	def mostrar(self):
+		colu = self.tree.item(self.tree.selection())['values']
+		print(colu[0],colu[1])
+		mos = Mostrar(self,colu[0],colu[1])
 
 	def buscar(self):
 		
