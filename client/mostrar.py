@@ -2,9 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox as mb
 from client.db.db import Sqlite
+import os, sys
 
 class Mostrar(tk.Toplevel):
+
+	def resolver_ruta(self, ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
 	db_log = Sqlite()
+
 	def __init__(self, menu = None, dia="", ci=""):
 		super().__init__(menu, width = 600, height =380)
 		self.dia = dia
@@ -78,8 +86,8 @@ class Mostrar(tk.Toplevel):
 		tlf_line=tk.Frame(fra,height=2,width=450)
 		tlf_line.place(x=13,y=280)
 
-		self.boton_registrar = tk.PhotoImage(file="imag/volver.png")
-		self.boton_cacelar =  tk.PhotoImage(file="imag/exportar.png")
+		self.boton_registrar = tk.PhotoImage(file= self.resolver_ruta("imag/volver.png"))
+		self.boton_cacelar =  tk.PhotoImage(file= self.resolver_ruta("imag/exportar.png"))
 
 		self.cargar()
 

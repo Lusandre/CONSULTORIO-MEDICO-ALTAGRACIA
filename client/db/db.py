@@ -1,8 +1,19 @@
 import sqlite3
+import os, sys
 
 class Sqlite:
 
-	db_name = 'database.db'
+	def resolver_ruta(self, ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
+	def resolver(ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
+	db_name = resolver('database.db')
 	query = ''
 
 	def __init__(self, parameters = {}):

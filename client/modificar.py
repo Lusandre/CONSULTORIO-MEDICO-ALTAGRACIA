@@ -2,8 +2,15 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox as mb
 from client.db.db import Sqlite
+import os, sys
 
 class Modificar(tk.Toplevel):
+
+	def resolver_ruta(self, ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
 	db_log = Sqlite()
 	def __init__(self, menu = None):
 		super().__init__(menu, width = 600, height =380)
@@ -13,7 +20,7 @@ class Modificar(tk.Toplevel):
 
 	def gui (self):
 		
-		self.login_imagen = tk.PhotoImage(file= "imag/fond.png")
+		self.login_imagen = tk.PhotoImage(file= self.resolver_ruta("imag/fond.png"))
 		self.main = tk.Label(self, image = self.login_imagen, bd=0)
 		self.main.pack()
 
@@ -58,12 +65,12 @@ class Modificar(tk.Toplevel):
 		self.new_clave_line=tk.Frame(self, height=2,width=200)
 		self.new_clave_line.place(x=330,y=235)
 
-		self.guardar = tk.PhotoImage(file="imag/guardar.png")
+		self.guardar = tk.PhotoImage(file= self.resolver_ruta("imag/guardar.png"))
 		self.btn_comprobar = tk.Button(self, command = self.comprobar)
 		self.btn_comprobar.config( image = self.guardar, bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
 		self.btn_comprobar.place(x="40",y="285")
 
-		self.bonton_inicio = tk.PhotoImage(file="imag/modificarr.png")
+		self.bonton_inicio = tk.PhotoImage(file= self.resolver_ruta("imag/modificarr.png"))
 		self.btn_inicio = tk.Button(self, command = self.actualizar)
 		self.btn_inicio.config( image = self.bonton_inicio, state = "disable",bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
 		self.btn_inicio.place(x="350",y="285")

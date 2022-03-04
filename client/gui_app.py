@@ -6,10 +6,22 @@ from datetime import datetime
 from client.db.db import Sqlite
 from client.modificar import Modificar
 from client.mostrar import Mostrar
+import os, sys
 
 class Frame(tk.Frame):
 
-	db_name = 'database.db'
+	def resolver_ruta(self, ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
+	def resolver(ruta_relativa):
+		if hasattr(sys, '_MEIPASS'):
+			return os.path.join(sys._MEIPASS, ruta_relativa)
+		return os.path.join(os.path.abspath('.'), ruta_relativa)
+
+	db_name = resolver('database.db')
+	#db_name = 'database.db
 	db_log = Sqlite()
 	date = str(datetime.today().strftime('%Y-%m-%d'))
 
@@ -21,7 +33,7 @@ class Frame(tk.Frame):
 		
 		
 		self.menu()
-		#self.tabla()
+		#self.tabla() self.resolver_ruta()
 
 	def run_query(self, query, parameters = {}):
 		with sqlite3.connect(self.db_name) as conn: 
@@ -33,7 +45,7 @@ class Frame(tk.Frame):
 
 
 	def inicio (self):
-		self.login_imagen = tk.PhotoImage(file= "imag/fondo.png")
+		self.login_imagen = tk.PhotoImage(file= self.resolver_ruta("imag/fondo.png"))
 		self.main = tk.Label(self, image = self.login_imagen, bd=0)
 		self.main.pack()
 
@@ -59,7 +71,7 @@ class Frame(tk.Frame):
 		self.clave_line=tk.Frame(self, height=2,width=200)
 		self.clave_line.place(x=20,y=235)
 
-		self.bonton_inicio = tk.PhotoImage(file="imag/Imagen1.png")
+		self.bonton_inicio = tk.PhotoImage(file= self.resolver_ruta("imag/Imagen1.png"))
 		self.btn_inicio = tk.Button(self, command = self.login)
 		self.btn_inicio.config( image = self.bonton_inicio, bg = "DeepSkyBlue4",  cursor = 'hand2', border = 0)
 		self.btn_inicio.place(x="40",y="285")
@@ -98,7 +110,7 @@ class Frame(tk.Frame):
 		for widget in self.winfo_children():
 			widget.destroy()
 		#self.tree.destroy
-		self.menu = tk.PhotoImage(file= "imag/fondo2.png")
+		self.menu = tk.PhotoImage(file= self.resolver_ruta("imag/fondo2.png"))
 		self.main = tk.Label(self,image = self.menu,bd=0)
 		self.main.pack()
 		#self.menu_frame=Frame(self.main,bg="white",height=300,width=300)
@@ -107,19 +119,19 @@ class Frame(tk.Frame):
 		self.menu_info = tk.Label(self,text="BIENVENIDO",fg="DeepSkyBlue4",bg="white",font=("Bodoni MT",20,"bold")).place(x=205,y=45)
 		self.menu_info1 = tk.Label(self,text="Seleccione la tarea que desee realizar",fg="DeepSkyBlue4",bg="white",font=("Bodoni MT",10,"bold")).place(x=200,y=85)
 
-		self.bonton_registro = tk.PhotoImage(file="imag/botonR2.png")
+		self.bonton_registro = tk.PhotoImage(file= self.resolver_ruta("imag/botonR2.png"))
 		self.btn_registro= tk.Button(self,image=self.bonton_registro,command = self.registro, bg="white",border=0)
 		self.btn_registro.place(x=195,y=135)
 
-		self.bonton_consultar = tk.PhotoImage(file="imag/botonR1.png")
+		self.bonton_consultar = tk.PhotoImage(file= self.resolver_ruta("imag/botonR1.png"))
 		self.bnt_consultar= tk.Button(self,image=self.bonton_consultar,bg="white",border=0, command = self.tablad) 
 		self.bnt_consultar.place(x=195,y=185)
 
-		self.bonton_editar = tk.PhotoImage(file="imag/botonR3.png")
+		self.bonton_editar = tk.PhotoImage(file= self.resolver_ruta("imag/botonR3.png"))
 		self.bnt_editar= tk.Button(self,command = self.editar,image=self.bonton_editar,bg="white",border=0)
 		self.bnt_editar.place(x=195,y=235)
 
-		self.bonton_salir = tk.PhotoImage(file="imag/botonR.png")
+		self.bonton_salir = tk.PhotoImage(file= self.resolver_ruta("imag/botonR.png"))
 		self.bnt_salir= tk.Button(self,image=self.bonton_salir,bg="white",border=0)
 		self.bnt_salir.place(x=225,y=305)
 
@@ -145,7 +157,7 @@ class Frame(tk.Frame):
 		self.ci_line=tk.Frame(tabla, height=2,width=140)
 		self.ci_line.place(x=20,y=95)
 
-		self.bonton_buscar = tk.PhotoImage(file="imag/buscar.png")
+		self.bonton_buscar = tk.PhotoImage(file= self.resolver_ruta("imag/buscar.png"))
 		self.bnt_salir= tk.Button(tabla, command=self.buscar,image=self.bonton_buscar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_salir.place(x=190,y=70)
 
@@ -166,11 +178,11 @@ class Frame(tk.Frame):
 
 		self.tree.insert('',0, values = ('12-01-22', '28349644', 'Lusandre', 'Marcano','04143958194'))
 
-		self.bonton_mostrar = tk.PhotoImage(file="imag/mostrar.png")
+		self.bonton_mostrar = tk.PhotoImage(file= self.resolver_ruta("imag/mostrar.png"))
 		self.bnt_mostrar= tk.Button(tabla,command = self.mostrar,image=self.bonton_mostrar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_mostrar.place(x=125,y=345)	
 
-		self.bonton_volver = tk.PhotoImage(file="imag/volver.png")
+		self.bonton_volver = tk.PhotoImage(file= self.resolver_ruta("imag/volver.png"))
 		self.bnt_volver= tk.Button(tabla, command = tabla.destroy)
 		self.bnt_volver.config(image=self.bonton_volver,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_volver.place(x=325,y=345)
@@ -224,7 +236,7 @@ class Frame(tk.Frame):
 		ced_line=tk.Frame(registro_frame,height=2,width=150)
 		ced_line.place(x=13,y=105)
 
-		self.bnt_buscar = tk.PhotoImage(file="imag/bus.png")
+		self.bnt_buscar = tk.PhotoImage(file= self.resolver_ruta("imag/bus.png"))
 		self.bnt_bus= tk.Button(registro_frame, command=self.bus,image=self.bnt_buscar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_bus.place(x=135,y=80)
 
@@ -291,8 +303,8 @@ class Frame(tk.Frame):
 		self.eva_entry = tk.Entry(registro_frame, textvariable=self.texteva,relief="flat",width=105,bg="white",fg="black",font=("Arial",11,"bold")) 
 		self.eva_entry.place(x=13,y=255)
 
-		self.boton_registrar = tk.PhotoImage(file="imag/BOTON1.png")
-		self.boton_cacelar =  tk.PhotoImage(file="imag/BOTON2.png")
+		self.boton_registrar = tk.PhotoImage(file= self.resolver_ruta("imag/BOTON1.png"))
+		self.boton_cacelar =  tk.PhotoImage(file= self.resolver_ruta("imag/BOTON2.png"))
 
 		BTN_R = tk.Button(registro_frame, command = self.registra,image=self.boton_registrar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		BTN_R.place(x=70,y=300)
