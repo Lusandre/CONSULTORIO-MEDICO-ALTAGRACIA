@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['prueba.py'],
+a = Analysis(['consultorio.py'],
              pathex=[],
              binaries=[],
              datas=[('./imag/*.png','imag'),('./database.db', './')],
@@ -24,12 +24,12 @@ exe = EXE(pyz,
           a.scripts, 
           [],
           exclude_binaries=True,
-          name='prueba',
+          name='consultorio',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True,
+          console=False,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
@@ -41,4 +41,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='prueba')
+               name='consultorio')
