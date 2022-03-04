@@ -5,19 +5,22 @@ from client.db.db import Sqlite
 import os, sys
 
 class Modificar(tk.Toplevel):
-
+	#Maneja las rutas en el empaquetado
 	def resolver_ruta(self, ruta_relativa):
 		if hasattr(sys, '_MEIPASS'):
 			return os.path.join(sys._MEIPASS, ruta_relativa)
 		return os.path.join(os.path.abspath('.'), ruta_relativa)
-
+	#Crea la conexion con la base de datos
 	db_log = Sqlite()
+
+	#Metodo constructos
 	def __init__(self, menu = None):
 		super().__init__(menu, width = 600, height =380)
-		self.menu = menu
+		self.menu = menu 
+		self.resizable(False,False)
 		self.gui()
 
-
+	#Genera la interfaz de modificar usuario
 	def gui (self):
 		
 		self.login_imagen = tk.PhotoImage(file= self.resolver_ruta("imag/fond.png"))
@@ -60,7 +63,7 @@ class Modificar(tk.Toplevel):
 		self.new_clave_info.place(x=330,y=175)
 		self.new_clave_string = tk.StringVar()
 		self.new_clave_entry = tk.Entry(self, textvariable = self.new_clave_string) 
-		self.new_clave_entry.config( relief="flat",width=20,state = "disable",disabledbackground="DeepSkyBlue4",bg="DeepSkyBlue4",fg="white",show='*',font=("Arial",15,"bold"))
+		self.new_clave_entry.config( relief="flat",width=10,state = "disable",disabledbackground="DeepSkyBlue4",bg="DeepSkyBlue4",fg="white",show='*',font=("Arial",15,"bold"))
 		self.new_clave_entry.place(x=330,y=205)
 		self.new_clave_line=tk.Frame(self, height=2,width=200)
 		self.new_clave_line.place(x=330,y=235)
@@ -75,9 +78,9 @@ class Modificar(tk.Toplevel):
 		self.btn_inicio.config( image = self.bonton_inicio, state = "disable",bg = "DeepSkyBlue4", activebackground = "DeepSkyBlue4", cursor = 'hand2', border = 0)
 		self.btn_inicio.place(x="350",y="285")
 
-	def comprobar(self):				#Funcion login ... Nos permitira comprobar 'usuario' y 'contraseña' con la base de datos
-		usuario=self.usuario_entry.get()		#Obtenemos el valor de la 'caja1' (usuario)
-		contr=self.clave_entry.get()		#Obtenemos el valor de la 'caja2' (contraseña)
+	def comprobar(self):				
+		usuario=self.usuario_entry.get()		
+		contr=self.clave_entry.get()		
 		
 		if self.db_log.login((usuario, contr)):
 			mb.showinfo(parent = self,title="Datos Correctos",message="Modifique el usuario")		#Mostramos 'Login Correcto'

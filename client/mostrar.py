@@ -19,6 +19,7 @@ class Mostrar(tk.Toplevel):
 		self.ci = ci
 		self.menu = menu
 		self.config(bg="DeepSkyBlue4")
+		self.resizable(False,False)
 		self.gui()
 
 
@@ -91,7 +92,7 @@ class Mostrar(tk.Toplevel):
 
 		self.cargar()
 
-		BTN_R = tk.Button(fra, image=self.boton_registrar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
+		BTN_R = tk.Button(fra, image=self.boton_registrar,command=self.destroy,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		BTN_R.place(x=70,y=300)
 
 		BTN_C = tk.Button(fra,image=self.boton_cacelar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
@@ -103,8 +104,6 @@ class Mostrar(tk.Toplevel):
 				
 		db_rows = self.db_log.rellenar((self.ci,))
 		# filling data
-		print (db_rows)
-		print ("nuevo")
 		for row in db_rows:
 			self.cedula_label.config(text=row[0])
 			self.nombre_label.config(text=row[1])
@@ -114,7 +113,6 @@ class Mostrar(tk.Toplevel):
 			self.telefono_label.config(text=row[5])
 		db_rowsd = self.db_log.rellenar_diag((self.ci,self.dia))
 		for row in db_rowsd:
-			print(row[1])
 			self.date.config(text=row[1])
 			self.ante_label.config(text=row[2])
 			self.eva_label.config(text=row[3])

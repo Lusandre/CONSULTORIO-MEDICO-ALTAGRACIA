@@ -29,11 +29,11 @@ class Frame(tk.Frame):
 		super().__init__(root, width = 480, height =320)
 		self.root = root
 		self.config(bg="DeepSkyBlue4")
+		self.root.resizable(False,False)
 		self.pack()
 		
 		
-		self.menu()
-		#self.tabla() self.resolver_ruta()
+		self.inicio()
 
 	def run_query(self, query, parameters = {}):
 		with sqlite3.connect(self.db_name) as conn: 
@@ -96,26 +96,14 @@ class Frame(tk.Frame):
 		self.texteva.set('')
 		self.textante.set('')
 	
-	def clearFrame(self):
-    # destroy all widgets from frame
-		for widget in self.winfo_children():
-			widget.destroy()
-		#self.tree.destroy
-    # this will clear frame and frame will be empty
-    # if you want to hide the empty panel then
-		#self.pack_forget()
-		self.menu()
 
 	def menu (self):
 		for widget in self.winfo_children():
 			widget.destroy()
-		#self.tree.destroy
 		self.menu = tk.PhotoImage(file= self.resolver_ruta("imag/fondo2.png"))
 		self.main = tk.Label(self,image = self.menu,bd=0)
 		self.main.pack()
-		#self.menu_frame=Frame(self.main,bg="white",height=300,width=300)
-		#self.menu_frame.place(x=155,y=35)
-
+	
 		self.menu_info = tk.Label(self,text="BIENVENIDO",fg="DeepSkyBlue4",bg="white",font=("Bodoni MT",20,"bold")).place(x=205,y=45)
 		self.menu_info1 = tk.Label(self,text="Seleccione la tarea que desee realizar",fg="DeepSkyBlue4",bg="white",font=("Bodoni MT",10,"bold")).place(x=200,y=85)
 
@@ -132,12 +120,11 @@ class Frame(tk.Frame):
 		self.bnt_editar.place(x=195,y=235)
 
 		self.bonton_salir = tk.PhotoImage(file= self.resolver_ruta("imag/botonR.png"))
-		self.bnt_salir= tk.Button(self,image=self.bonton_salir,bg="white",border=0)
+		self.bnt_salir= tk.Button(self,command = self.root.destroy,image=self.bonton_salir,bg="white",border=0)
 		self.bnt_salir.place(x=225,y=305)
 
 	def editar(self):
 		edit = Modificar(self)
-
 
 
 	def tablad(self):
@@ -186,11 +173,10 @@ class Frame(tk.Frame):
 		self.bnt_volver= tk.Button(tabla, command = tabla.destroy)
 		self.bnt_volver.config(image=self.bonton_volver,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		self.bnt_volver.place(x=325,y=345)
-		self.get_products()
+		self.get_historias()
 
 	def mostrar(self):
 		colu = self.tree.item(self.tree.selection())['values']
-		print(colu[0],colu[1])
 		mos = Mostrar(self,colu[0],colu[1])
 
 	def buscar(self):
@@ -265,20 +251,6 @@ class Frame(tk.Frame):
 		dir_line=tk.Frame(registro_frame,height=2,width=150)
 		dir_line.place(x=13,y=165)
 
-		'''cedula = tk.Label(registro_frame,text="Cedula",fg="white",bg="DeepSkyBlue4",font=("Arial",10,"bold")) 
-										cedula.place(x=328,y=60)
-										cedula_entry = tk.Entry(registro_frame,relief="flat",width=20,bg="DeepSkyBlue4",fg="white",font=("Arial",11,"bold")) 
-										cedula_entry.place(x=328,y=80)
-										ced_line=tk.Frame(registro_frame,height=2,width=150)
-										ced_line.place(x=328,y=105)
-								
-										fecha = tk.Label(registro_frame,text="Fecha Dianostico",fg="white",bg="DeepSkyBlue4",font=("Arial",10,"bold")) 
-										fecha.place(x=10,y=120)
-										fecha_entry = tk.Entry(registro_frame,relief="flat",width=20,bg="DeepSkyBlue4",fg="white",font=("Arial",11,"bold")) 
-										fecha_entry.place(x=13,y=140)
-										fecha_line=tk.Frame(registro_frame,height=2,width=150)
-										fecha_line.place(x=13,y=165)'''
-
 		correo = tk.Label(registro_frame,text="Correo",fg="white",bg="DeepSkyBlue4",font=("Arial",10,"bold")) 
 		correo.place(x=170,y=120)
 		self.correo_entry = tk.Entry(registro_frame, textvariable=self.textmail,relief="flat",width=20,bg="DeepSkyBlue4",fg="white",font=("Arial",11,"bold")) 
@@ -312,15 +284,12 @@ class Frame(tk.Frame):
 		BTN_C = tk.Button(registro_frame,command = ventana_registro.destroy ,image=self.boton_cacelar,bg="DeepSkyBlue4", activebackground = "DeepSkyBlue4",border=0)
 		BTN_C.place(x=300,y=300)
 	
-	 # Get Products from Database
 
 	def bus(self):
 		ci=self.cedula_entry.get()
         		
 		db_rows = self.db_log.rellenar((ci,))
 		# filling data
-		print (db_rows)
-		print ("nuevo")
 		for row in db_rows:
 			self.textnom.set(row[1])
 			self.textape.set(row[2])
@@ -337,10 +306,11 @@ class Frame(tk.Frame):
 			self.db_log.reg_paciente(paciente)
 
 		self.db_log.reg_diagnostico(diagnostico)
+		mb.showinfo(title="Registro correcto",message="Se registro de forma correcta los datos")
 		self.vacio()
 
 
-	def get_products(self):
+	def get_historias(self):
         # cleaning Table 
 		records = self.tree.get_children()
 		for element in records:
@@ -348,6 +318,5 @@ class Frame(tk.Frame):
         
 		db_rows = self.db_log.get_historias()
 		# filling data
-		print (db_rows)
 		for row in db_rows:
 			self.tree.insert('', 0, values = (row[0],row[1],row[2], row[3],row[4]))
